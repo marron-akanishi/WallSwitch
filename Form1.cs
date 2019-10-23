@@ -16,7 +16,7 @@ namespace WallSwitch
         };
         int disp_h, disp_w;
         string normal_path, fake_path;
-        WallpaperStyle style = null;
+        string style = "";
         Timer checker = new Timer();
         bool connect_flag = false;
 
@@ -25,12 +25,11 @@ namespace WallSwitch
             setting_Load();
             InitializeComponent();
             // フォームの設定
-            dispHeight.Value = disp_h;
-            dispWidth.Value = disp_w;
+            form_Reset();
             selStyle.DisplayMember = "Key";
             selStyle.ValueMember = "Value";
             selStyle.DataSource = new BindingSource(StyleList, null);
-            selStyle.SelectedValue = style;
+            selStyle.SelectedValue = StyleList[style];
             // 解像度チェッカー
             checker.Interval = 300;
             checker.Tick += new EventHandler(disp_Checker);
@@ -51,8 +50,8 @@ namespace WallSwitch
             }
             normal_path = (string)Settings.Default["NormalPath"];
             fake_path = (string)Settings.Default["FakePath"];
-            style = (WallpaperStyle)Settings.Default["Style"];
-            if (style == null) style = WallpaperStyle.Center;
+            style = (string)Settings.Default["Style"];
+            if (style == "") style = "中央に表示";
         }
 
         /// <summary>
@@ -64,7 +63,7 @@ namespace WallSwitch
             disp_w = (int)dispWidth.Value;
             normal_path = normalImagePath.Text;
             fake_path = fakeImagePath.Text;
-            style = (WallpaperStyle)selStyle.SelectedValue;
+            style = ((KeyValuePair<string, WallpaperStyle>)selStyle.SelectedItem).Key;
             Settings.Default["DispH"] = disp_h;
             Settings.Default["DispW"] = disp_w;
             Settings.Default["NormalPath"] = normal_path;
@@ -76,18 +75,18 @@ namespace WallSwitch
         /// <summary>
         /// フォーム表示のリセット
         /// </summary>
-        private void setting_Reset()
+        private void form_Reset()
         {
             dispHeight.Value = disp_h;
             dispWidth.Value = disp_w;
             normalImagePath.Text = normal_path;
             fakeImagePath.Text = fake_path;
-            selStyle.SelectedValue = style;
+            selStyle.SelectedValue = StyleList[style];
         }
 
         private void cancelBtn_Click(object sender, EventArgs e)
         {
-            setting_Reset();
+            form_Reset();
             this.Visible = false;
             checker.Enabled = true;
         }
@@ -116,12 +115,12 @@ namespace WallSwitch
             int current_h = Screen.PrimaryScreen.Bounds.Height;
             if ((current_w != disp_w || current_h != disp_h) && connect_flag == false)
             {
-                Wallpaper.SetWallpaper(fake_path, style);
+                Wallpaper.SetWallpaper(fake_path, StyleList[style]);
                 connect_flag = true;
             }
             if (current_w == disp_w && current_h == disp_h && connect_flag == true)
             {
-                Wallpaper.SetWallpaper(normal_path, style);
+                Wallpaper.SetWallpaper(normal_path, StyleList[style]);
                 connect_flag = false;
             }
         }

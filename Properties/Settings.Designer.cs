@@ -70,5 +70,17 @@ namespace WallSwitch.Properties {
                 this["FakePath"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string Style {
+            get {
+                return ((string)(this["Style"]));
+            }
+            set {
+                this["Style"] = value;
+            }
+        }
     }
 }

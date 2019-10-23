@@ -7,17 +7,6 @@
     //  SettingsLoaded イベントは、設定値が読み込まれた後に発生します。
     //  SettingsSaving イベントは、設定値が保存される前に発生します。
     internal sealed partial class Settings {
-
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        public WallpaperStyle Style {
-            get {
-                return ((WallpaperStyle)(this["Style"]));
-            }
-            set {
-                this["Style"] = value;
-            }
-        }
-
         public Settings() {
             // // 設定の保存と変更のイベント ハンドラーを追加するには、以下の行のコメントを解除します:
             //
